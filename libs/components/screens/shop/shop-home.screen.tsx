@@ -3,23 +3,27 @@ import {
   useGetListingsLatestQuery,
 } from '../../../../slices/api/api.slice';
 import { useSelector } from 'react-redux';
-import {Center, Divider, FlatList, Heading, Spinner} from 'native-base';
+import { Center, Divider, FlatList, Heading, Spinner } from 'native-base';
 import { showErrorMessage } from '../../../helpers/show-error-message.helper';
 import { ShopListItem } from './components/shop-list-item';
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {CompositeScreenProps} from "@react-navigation/native";
-import {MainTabParamList} from "../../app";
-import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
-import {ShopParamsList} from "./shop-screen";
-import {FC} from "react";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { MainTabParamList } from '../../app';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { ShopParamsList } from './shop-screen';
+import { FC, useState } from 'react';
+import { ModalBuy } from './components/modal-buy';
+import { Listing } from '../../../../slices/api/types/types';
 
 type ShopHomeScreenParams = CompositeScreenProps<
-    NativeStackScreenProps<ShopParamsList, 'ShopHome'>,
-    BottomTabScreenProps<MainTabParamList>
+  NativeStackScreenProps<ShopParamsList, 'ShopHome'>,
+  BottomTabScreenProps<MainTabParamList>
 >;
 
-export const ShopHomeScreen:FC<ShopHomeScreenParams> = () => {
+export const ShopHomeScreen: FC<ShopHomeScreenParams> = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { isFetching, error } = useGetListingsLatestQuery(undefined);
+  const [chosenListing, setChosenListing] = useState<Listing | null>(null);
   const listings = useSelector(selectAllListings);
   if (isFetching) {
     console.log('fetching');
@@ -36,13 +40,24 @@ export const ShopHomeScreen:FC<ShopHomeScreenParams> = () => {
   );
   console.log(listings);
   return (
-    <Center mt={50} flex={1} >
+    <Center mt={50} flex={1}>
       <FlatList
-          width={'100%'}
-          px={5}
+        width={'100%'}
+        px={5}
         data={listings}
-        renderItem={({ item }) => <ShopListItem listing={item} />}
-        ItemSeparatorComponent={()=><Divider/>}
+        renderItem={({ item }) => (
+          <ShopListItem
+            listing={item}
+            setChosenListing={setChosenListing}
+            setIsModalVisible={setIsModalVisible}
+          />
+        )}
+        ItemSeparatorComponent={() => <Divider />}
+      />
+      <ModalBuy
+        listing={chosenListing}
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
       />
     </Center>
   );
