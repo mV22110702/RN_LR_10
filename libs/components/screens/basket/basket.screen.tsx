@@ -1,14 +1,16 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { MainTabParamList } from '../../app';
-import { FC, Fragment, useCallback } from 'react';
+import { FC, Fragment, useCallback, useMemo } from 'react';
 import {
-    Button,
-    Toast,
-    Divider,
-    FlatList,
-    Text,
-    VStack,
-    Center, Box,
+  Button,
+  Toast,
+  Divider,
+  FlatList,
+  Text,
+  VStack,
+  Center,
+  Box,
+  Heading,
 } from 'native-base';
 import { useSelector } from 'react-redux';
 import {
@@ -25,6 +27,15 @@ export type BasketScreenProps = BottomTabScreenProps<
 >;
 export const BasketScreen: FC<BasketScreenProps> = () => {
   const basketEntries = useSelector(selectAllEntries);
+  const totalSum = useMemo(
+    () =>
+      basketEntries.reduce(
+        (prev, entry) =>
+          entry.amount * entry.chosenListing.quote.USD.price + prev,
+        0,
+      ),
+    [basketEntries],
+  );
   const dispatch = useAppDispatch();
   const handlePressCheckout = useCallback(() => {
     dispatch(clearBasket());
@@ -46,22 +57,20 @@ export const BasketScreen: FC<BasketScreenProps> = () => {
   return (
     <VStack flex={1}>
       {basketEntries.length === 0 ? (
-        <Box
-        flex={1}
-          justifyContent={'center'}
-          alignItems={'center'}
-
-        >
+        <Box flex={1} justifyContent={'center'} alignItems={'center'}>
           <Text fontSize={'4xl'}>Basket is empty!</Text>
         </Box>
       ) : (
         <Fragment>
-          <FlatList
-            data={basketEntries}
-            px={5}
-            renderItem={({ item }) => <BasketListItem basketEntry={item} />}
-            ItemSeparatorComponent={() => <Divider />}
-          />
+          <Fragment>
+            <FlatList
+              data={basketEntries}
+              px={5}
+              renderItem={({ item }) => <BasketListItem basketEntry={item} />}
+              ItemSeparatorComponent={() => <Divider />}
+            />
+            <Heading>Total: {totalSum.toLocaleString()} $</Heading>
+          </Fragment>
           <Button onPress={handlePressCheckout}>Checkout</Button>
         </Fragment>
       )}

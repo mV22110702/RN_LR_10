@@ -29,20 +29,24 @@ export const BasketListItem: FC<Properties> = ({ basketEntry }) => {
             <Text>{basketEntry.chosenListing.symbol}</Text>
           </VStack>
         </HStack>
-        <VStack flex={1} >
-          <Text>{basketEntry.chosenListing.quote.USD.price.toFixed(2)} $</Text>
+        <VStack flex={1}>
+          <Text>
+            {basketEntry.chosenListing.quote.USD.price.toLocaleString()} $
+          </Text>
           <Text>x{basketEntry.amount}</Text>
         </VStack>
       </HStack>
-      <HStack py={3}>
-        <Text>
-          Total:{' '}
-          {(
-            basketEntry.amount * basketEntry.chosenListing.quote.USD.price
-          ).toFixed(2)}{' '}
-          $
+      <HStack py={3} alignItems={'center'} justifyContent={'space-between'}>
+        <Text fontSize={'xl'}>
+          <Text fontWeight={'semibold'}>Total: </Text>
+          <Text>
+            {(
+              basketEntry.amount * basketEntry.chosenListing.quote.USD.price
+            ).toLocaleString()}{' '}
+            $
+          </Text>
         </Text>
-          <Button colorScheme={'danger'}>Discard</Button>
+        <Button colorScheme={'danger'}>Discard</Button>
       </HStack>
     </VStack>
   );
