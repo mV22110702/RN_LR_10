@@ -1,11 +1,17 @@
 import { HStack, VStack, Image, Text, Center, Button } from 'native-base';
 import { BasketEntry } from '../../../../../slices/basket/types/types';
 import { API_IMAGE_BASE_URL } from '@env';
-import { FC } from 'react';
+import {FC, useCallback} from 'react';
+import {useAppDispatch} from "../../../../hooks/use-app-dispatch.hook";
+import {removeEntry} from "../../../../../slices/basket/basket.slice";
 
 type Properties = { basketEntry: BasketEntry };
 
 export const BasketListItem: FC<Properties> = ({ basketEntry }) => {
+  const dispatch = useAppDispatch()
+  const handlePressDiscard = useCallback(()=>{
+    dispatch(removeEntry(basketEntry))
+  },[]);
   return (
     <VStack>
       <HStack
@@ -46,7 +52,7 @@ export const BasketListItem: FC<Properties> = ({ basketEntry }) => {
             $
           </Text>
         </Text>
-        <Button colorScheme={'danger'}>Discard</Button>
+        <Button colorScheme={'danger'} onPress={handlePressDiscard}>Discard</Button>
       </HStack>
     </VStack>
   );

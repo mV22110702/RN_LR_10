@@ -25,7 +25,7 @@ export const basketSlice = createSlice({
       },
     },
     removeEntry(state, { payload }: PayloadAction<BasketEntry>) {
-      basketEntityAdapter.removeOne(state, payload.chosenListing.id);
+      basketEntityAdapter.removeOne(state, payload.id);
     },
     clearBasket(state) {
       basketEntityAdapter.removeAll(state);

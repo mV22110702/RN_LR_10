@@ -192,14 +192,12 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getListingsLatest: builder.query<ListingsLatestState, undefined>({
       queryFn: async (args, api, extraOptions, baseQuery) => {
-        // const fetchArgs: FetchArgs = {
-        //   url: `${API_LISTINGS_LATEST_URL}?convert=USD&limit=10`,
-        // };
+        const fetchArgs: FetchArgs = {
+          url: `${API_LISTINGS_LATEST_URL}?convert=USD&limit=10`,
+        };
         try {
-          // const response = await baseQuery(fetchArgs);
-          //TODO: remove mock
-          const response = mockApiResult;
-          const apiResult = mockApiResult;
+          const response = await baseQuery(fetchArgs);
+          const apiResult = response.data as GetListingsLatestResponse
           if (apiResult.status.error_code !== 0) {
             return {
               error: {
@@ -208,10 +206,9 @@ export const apiSlice = createApi({
               },
             };
           }
-          const { data } = response;
           const transformedData = listingsEntityAdapter.addMany(
             listingsEntityAdapter.getInitialState(),
-            data ?? [],
+            apiResult.data ?? [],
           );
           return { data: transformedData };
         } catch (_error) {
