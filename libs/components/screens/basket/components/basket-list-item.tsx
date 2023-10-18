@@ -42,7 +42,7 @@ export const BasketListItem: FC<Properties> = ({ basketEntry }) => {
           ).toFixed(2)}{' '}
           $
         </Text>
-          //TODO: Remove button
+          <Button colorScheme={'danger'}>Discard</Button>
       </HStack>
     </VStack>
   );

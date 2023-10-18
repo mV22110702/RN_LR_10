@@ -4,6 +4,7 @@ import { Button, Center, HStack, Image, Text, VStack } from 'native-base';
 import { API_IMAGE_BASE_URL } from '@env';
 import { useAppDispatch } from '../../../../hooks/use-app-dispatch.hook';
 import { addEntry } from '../../../../../slices/basket/basket.slice';
+import NumericInput from 'react-native-numeric-input'
 
 type Properties = { listing: Listing };
 export const ShopListItem: FC<Properties> = ({ listing }) => {
@@ -39,6 +40,7 @@ export const ShopListItem: FC<Properties> = ({ listing }) => {
         <Button onPress={handlePressBuy} size={10} colorScheme={'info'} width={75}>
           Buy
         </Button>
+        {/*<NumericInput onChange={value => console.log(value)} />*/}
       </VStack>
     </HStack>
   );
