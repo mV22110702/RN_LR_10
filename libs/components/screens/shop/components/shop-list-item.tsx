@@ -36,7 +36,7 @@ export const ShopListItem: FC<Properties> = ({ listing, setChosenListing,setIsMo
         </VStack>
       </HStack>
       <VStack space={5} flex={1}>
-        <Text color={'warning'}>{listing.quote.USD.price.toFixed(2)} $</Text>
+        <Text color={'warning'}>{listing.quote.USD.price.toLocaleString()} $</Text>
         <Button
           onPress={handleChooseListing}
           size={10}

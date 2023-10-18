@@ -43,7 +43,7 @@ export const BasketScreen: FC<BasketScreenProps> = () => {
       render: ({ id }) => {
         return (
           <Notification
-            marginTop={20}
+            marginTop={10}
             id={id}
             title={'Currency bought'}
             variant={'solid'}
