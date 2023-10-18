@@ -11,9 +11,10 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { MainTabParamList } from '../../app';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { ShopParamsList } from './shop-screen';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { ModalBuy } from './components/modal-buy';
 import { Listing } from '../../../../slices/api/types/types';
+import { ShopList } from './components/shop-list';
 
 type ShopHomeScreenParams = CompositeScreenProps<
   NativeStackScreenProps<ShopParamsList, 'ShopHome'>,
@@ -26,33 +27,17 @@ export const ShopHomeScreen: FC<ShopHomeScreenParams> = () => {
   const [chosenListing, setChosenListing] = useState<Listing | null>(null);
   const listings = useSelector(selectAllListings);
   if (isFetching) {
-    console.log('fetching');
-    console.log(listings);
     return <Spinner flex={1} />;
   }
   if (error) {
-    console.log('error');
-    console.log(listings);
     return <Heading>{showErrorMessage(error)}</Heading>;
   }
-  console.log(
-    'listings==============================================================',
-  );
-  console.log(listings);
   return (
     <Center mt={50} flex={1}>
-      <FlatList
-        width={'100%'}
-        px={5}
-        data={listings}
-        renderItem={({ item }) => (
-          <ShopListItem
-            listing={item}
-            setChosenListing={setChosenListing}
-            setIsModalVisible={setIsModalVisible}
-          />
-        )}
-        ItemSeparatorComponent={() => <Divider />}
+      <ShopList
+        listings={listings}
+        setChosenListing={setChosenListing}
+        setIsModalVisible={setIsModalVisible}
       />
       <ModalBuy
         listing={chosenListing}
