@@ -45,7 +45,7 @@ export const ModalBuy: FC<Properties> = ({
                 {' '}
                 <Text fontSize={'xl'}>How much You want to buy?</Text>
               </FormControl.Label>
-              <NumericInput value={amount} iconSize={1} onChange={setAmount} />
+              <NumericInput minValue={1} value={amount} iconSize={1} onChange={setAmount} />
             </FormControl>
           ) : (
             <Center>
